@@ -1,90 +1,125 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
+
+
+import datetime
 import os
 import re
-import threading
-import datetime
-
+# import threading
+import time
+# from queue import Queue
+# import requests
+from Crypto.Cipher import AES
+from selenium import webdriver
 import requests
-from queue import Queue
+from you_get import common as you_get
 
 
-# 预下载，获取m3u8文件，读出ts链接，并写入文档
-def down():
-    # m3u8链接
-    url = 'https://m.dajueshanpiaoliu.com/#/vodDetail?id=308632'
-    # 当ts文件链接不完整时，需拼凑
-    # 大部分网站可使用该方法拼接，部分特殊网站需单独拼接
-    # base_url = re.split(r"[a-zA-Z0-9-_\.]+\.m3u8", url)[0]  #  正则的+号
-    # print(base_url)
-    resp = requests.get(url)
-    print(resp.headers)
-    m3u8_text = resp.text
-    print(m3u8_text)
-    # 按行拆分m3u8文档
-    ts_queue = Queue(10000)
-    lines = m3u8_text.split('\n')
-    # 找到文档中含有ts字段的行
-    concatfile = 'cache/' + "s" + '.txt'
-    for line in lines:
-        if '.ts' in line:
-            if 'http' in line:
-                # print("ts>>", line)
-                ts_queue.put(line)
-            else:
-                line = base_url + line
-                ts_queue.put(line)
-                # print('ts>>',line)
-            filename = re.search('([a-zA-Z0-9-]+.ts)', line).group(1).strip()
-            # 一定要先写文件，因为线程的下载是无序的，文件无法按照
-            # 123456。。。去顺序排序，而文件中的命名也无法保证是按顺序的
-            # 这会导致下载的ts文件无序，合并时，就会顺序错误，导致视频有问题。
-            open(concatfile, 'a+').write("file %s\n" % filename)
-    return ts_queue, concatfile
-
-
-# 线程模式，执行线程下载
-
-def run(ts_queue):
-    tt_name = threading.current_thread().getName()
-    while not ts_queue.empty():
-        url = ts_queue.get()
-        r = requests.get(url, stream=True)
-        filename = re.search('([a-zA-Z0-9-]+.ts)', url).group(1).strip()
-        with open('cache/' + filename, 'wb') as fp:
-            for chunk in r.iter_content(5242):
-                if chunk:
-                    fp.write(chunk)
-        print(tt_name + " " + filename + ' 下载成功')
-
-
-# 视频合并方法，使用ffmpeg
-def merge(concatfile, name):
+def down_url(url):
+    """下载文件"""
+    # print(urlurl)
     try:
-        path = 'cache/' + name + '.mp4'
-        command = 'ffmpeg -y -f concat -i %s -crf 18 -ar 48000 -vcodec libx264 -c:a aac -r 25 -g 25 -keyint_min 25 -strict -2 %s' % (
-        concatfile, path)
-        os.system(command)
-        print('视频合并完成')
+        driver.get(url)
+        # test = "you-get - i \"" + url + "\""
+        # os.system(test)
+
     except:
-        print('合并失败')
+        print('下载失败')
+        pass
+    # print(driver)
+    # # 下载完关闭浏览器
+    # fileName = url.split('/')[-1]
+    # return fileName
+
+
+def get_url():
+    while True:
+        if os.path.isfile(down_dir + 'index.m3u8'):
+            """生成文件下载链接和本地文件链接"""
+            time.sleep(1)
+            f = open(down_dir + 'index.m3u8', 'r')
+            lines = f.read().split('\n')
+            for i in lines:
+                if i.endswith('.image'):
+                    # print(i)
+                    # locaFile.append(down_dir + i)
+                    url.append(i)
+            f.close()
+            os.remove(down_dir + 'index.m3u8')
+            break
+
+            # print(url)
+            # return url
+
+
+# 打开下下载的key，对key进行相关操作
+# def get_key():
+#     # for i in locaFile:
+#     #     if re.findall('.key', i):
+#
+
+
+# def merge():
+#
+#     for i in locaFile:
+#
+def remove():
+    deletefile = os.listdir(down_dir)
+    for i in deletefile:
+        if i.endswith('.m3u8') or i.endswith('.ts') or i.endswith('.key') or i.endswith('.image'):
+            # f.write(open(down_path + i, 'rb').read())
+            os.remove(down_dir + i)
+
+    pass
 
 
 if __name__ == '__main__':
-    name = '傀儡杀人'
-    start = datetime.datetime.now().replace(microsecond=0)
-    s, concatfile = down()
-    # print(s,concatfile)
-    threads = []
-    for i in range(15):
-        t = threading.Thread(target=run, name='th-' + str(i), kwargs={'ts_queue': s})
-        threads.append(t)
-    for t in threads:
-        t.start()
-    for t in threads:
-        t.join()
-    end = datetime.datetime.now().replace(microsecond=0)
-    print('下载耗时：' + str(end - start))
-    merge(concatfile, name)
-    over = datetime.datetime.now().replace(microsecond=0)
-    print('合并耗时：' + str(over - end))
+    time1 = datetime.datetime.now().replace(microsecond=0)
+    url_m3u8 = input('清输入m3u8地址：')
+    # 本地存放目前
+    down_dir = 'D:/Users/5006554/Downloads/'
+    name = input('输入文件名：')
+    path = down_dir + name + '.mp4'
+
+    url = []
+
+    driver = webdriver.Chrome()
+    driver.minimize_window()
+
+    down_url(url_m3u8)
+    get_url()
+    f_mp4 = open(path, 'wb')
+    for i in url:
+
+        # 替换~号为_号
+        # t = i.split('/')[-1].replace('~', '_').replace('image', 'ts')
+        t = i.split('/')[-1].replace('~', '_')
+
+        # 下载
+        down_url(i)
+    #  本地解密合并操作
+    #     time.sleep(1)
+        while True:
+            if os.path.isfile(down_dir + i.split('/')[-1].replace('~', '_')):
+                # time.sleep(1)
+                # os.rename(down_dir + i.split('/')[-1].replace('~', '_'), down_dir + t)
+                time.sleep(0.2)
+                print('开始吞并' + down_dir + t + '文件')
+                f_temp = open(down_dir + t, 'rb')
+                f_mp4.write(f_temp.read())
+                print('吞并' + down_dir + t + '文件完成')
+                f_temp.close()
+                # 减少删除的时间，是否成功
+                # os.remove(down_dir + t)
+                # print('删除' + down_dir + t + '文件完成')
+                break
+    driver.close()
+    f_mp4.close()
+    print('已生成' + path)
+
+
+    remove()
+    time2 = datetime.datetime.now().replace(microsecond=0)
+    print('下载用时' + str(time2 - time1))
+
+""""""
