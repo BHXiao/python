@@ -3,10 +3,10 @@
 
 
 ##################################################
-# '''
-# 将文件的行变成列   列变成行
-# '''
-
+'''
+将文件的行变成列   列变成行
+'''
+#
 # from openpyxl import load_workbook
 #
 # wb = load_workbook('qingdan.xlsx')
@@ -18,7 +18,8 @@
 #     for y in range(1, column + 1):
 #         # date = ws.cell(row=x,column=y).value
 #         if x > y:  # 防止x行y列这块范围的数据再次倒过来
-#             ws.cell(row=x, column=y).value , ws.cell(row=y,column=x).value = ws.cell(row=y,column=x).value, ws.cell(row=x, column=y).value
+#             ws.cell(row=x, column=y).value , ws.cell(row=y,column=x).value =\
+#                     ws.cell(row=y,column=x).value, ws.cell(row=x, column=y).value
 #         # ws.cell(row=y, column=x).value = date
 # wb.save('qingdan1.xlsx')
 
@@ -207,7 +208,7 @@
 # print(mydoubler(11))
 
 ######################################################################################
-# # 控制浏览调整邮箱分组
+# 控制浏览调整邮箱分组
 # import pyperclip
 # import pyautogui
 # import easygui
@@ -235,22 +236,32 @@
 # for i in range(1, ws.max_row):
 #     text = str(ws.cell(row=i + 1, column=1).value)
 #     text1 = str(ws.cell(row=i + 1, column=5).value)
-#     driver.find_element_by_xpath('/html/body/div[3]/div/div/div/div[2]/div/div[1]/form/div[2]/div[2]/div/input').clear()
-#     driver.find_element_by_xpath('/html/body/div[3]/div/div/div/div[2]/div/div[1]/form/div[2]/div[2]/div/input').send_keys(text)
+#     driver.find_element_by_xpath('/html/body/div[3]/div/div/div/div[2]/div'
+#                                  '/div[1]/form/div[2]/div[2]/div/input').clear()
+#     driver.find_element_by_xpath('/html/body/div[3]/div/div/div/div[2]/div'
+#                                  '/div[1]/form/div[2]/div[2]/div/input').send_keys(text)
 #     driver.find_element_by_xpath('/html/body/div[3]/div/div').click()
-#     driver.find_element_by_xpath('/html/body/div[3]/div/div/div/div[2]/div/div[2]/div[1]/table/tbody[2]/tr/td[1]/input').click()
-#     driver.find_element_by_xpath('/html/body/div[3]/div/div/div/div[2]/div/div[1]/form/div[2]/div[1]/div[2]/button').click()
+#     driver.find_element_by_xpath('/html/body/div[3]/div/div/div/div[2]/div'
+#                                  '/div[2]/div[1]/table/tbody[2]/tr/td[1]/input').click()
+#     driver.find_element_by_xpath('/html/body/div[3]/div/div/div/div[2]/div/div[1]'
+#                                  '/form/div[2]/div[1]/div[2]/button').click()
 #     time.sleep(0.5)
-#     driver.find_element_by_xpath('/html/body/div[5]/div/div/div/div[2]/div/div[1]/div[2]/div[1]/div[1]/input').send_keys(text1)
-#     driver.find_element_by_xpath('//*[@id="searchUnitTreeContainer"]/ul/li/label/span[2]').click()
-#     driver.find_element_by_xpath('/html/body/div[5]/div/div/div/div[2]/div/button[1]').click()
-#     driver.find_element_by_xpath('/html/body/div[5]/div/div/div/div[3]/button[1]').click()
-#     driver.find_element_by_xpath('//*[@id="searchUnitTreeContainer"]/ul/li/label/span[2]').click()
-#     driver.find_element_by_xpath('//*[@id="searchUnitTreeContainer"]/ul/li/label/span[2]').click()
+#     driver.find_element_by_xpath('/html/body/div[5]/div/div/div/div[2]'
+#                                  '/div/div[1]/div[2]/div[1]/div[1]/input').send_keys(text1)
+#     driver.find_element_by_xpath('//*[@id="searchUnitTreeContainer"]'
+#                                  '/ul/li/label/span[2]').click()
+#     driver.find_element_by_xpath('/html/body/div[5]/div/div/div/div[2]'
+#                                  '/div/button[1]').click()
+#     driver.find_element_by_xpath('/html/body/div[5]/div/div/div/div[3]'
+#                                  '/button[1]').click()
+#     driver.find_element_by_xpath('//*[@id="searchUnitTreeContainer"]'
+#                                  '/ul/li/label/span[2]').click()
+#     driver.find_element_by_xpath('//*[@id="searchUnitTreeContainer"]'
+#                                  '/ul/li/label/span[2]').click()
 #     time.sleep(4)
 # time.sleep(4)
 # driver.quit()
-###########################################################################################################################
+# ###########################################################################################################################
 # import pyperclip 复制后 pyautogui 找不到窗口句柄问题
 # import win32gui
 # import win32api
