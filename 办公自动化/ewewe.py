@@ -19,7 +19,7 @@ elif len(sys.argv) == 2:
         print(sys.argv[1])
         print(mcbShelf.get(sys.argv[1]))
         pyperclip.copy(mcbShelf[sys.argv[1]])
-mcbShelf.close()
+mcbShelf.rang()
 
 
 """"""
